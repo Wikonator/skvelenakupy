@@ -1,0 +1,20 @@
+
+<div class="row">
+    <div id="title">
+        {{productResults.title}}
+    </div>
+    <div class="col-sm-6 col-md-4">
+    <div id="image">
+
+        <img alt="..." class="img-responsive" src={{productResults.imagePath}} ></img>
+    </div>
+    <ul id="variants" >
+        {{# each variantResults }}
+        <li > <img class="variantListItem" src={{this.thumbPath}} ></img> </li>
+        {{/ each }}
+    </ul>
+    <div>
+        <p> {{productResults.description}} </p>
+    </div>
+    <a href="/add-to-cart/{{productResults._id}}" class="btn btn-success pull-right" role="button"> Pridaj do košíka </a>
+</div>

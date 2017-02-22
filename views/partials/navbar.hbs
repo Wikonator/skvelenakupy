@@ -1,0 +1,105 @@
+<div id="app" class="container-fullwidth">
+    <nav class="navbar navbar-toggleable-md navbar-light navbar-inverse bg-faded" style="background-color: #000000">
+        <button class="navbar-toggler navbar-toggler-right navina" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <button class="navbar-toggler navbar-toggler-right navina" type="button" data-toggle="collapse" data-target="#navbarDropdownMenuLink" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+            <img src="/images/search.png">
+        </button>
+        <a class="navbar-brand navina" href="/">
+            <img src="/images/logow.png" class="img-fluid" alt="Responsive image">
+        </a>
+        <!-- <div  id="navbarNavDropdown" class="navbar-collapse collapse"> -->
+        <ul class="navbar-nav mr-auto navina">
+        </ul>
+        <ul class="navbar-nav navina">
+            <li class="nav-item navina">
+            <a class="nav-link" href="/kosik/">
+                <img src="/images/kosik.png" class="img-rounded" aria-hidden="true" style="height:25px; width:25px"> Košík
+                <span class="badge">{{session.cart.totalQty}}</span>
+            </a>
+          </li>
+          <li class="nav-item dropdown navina">
+            <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">  <img src="/images/pouz.png" class="img-circle" style="height:25px; width:25px"><span class="caret"></span>
+              Používateľ
+            </a>
+            <div class="dropdown-menu my-2 my-lg-0" aria-labelledby="navbarDropdownMenuLink" align="right">
+                {{# if login}}
+              <a class="dropdown-item" href="/user/userprofile">Tvoj účet</a>
+              <a class="dropdown-item" href="/user/logout">Odhlásiť</a>
+              {{ else }}
+              <a class="dropdown-item" href="/user/login">Prihlás sa</a>
+              <a class="dropdown-item" href="/user/signup"> Zaregistrovať </a>
+              {{/if}}
+            </div>
+          </li>
+        </ul>
+        <!-- </div> -->
+    </nav>
+    <nav class="navbar navbar-toggleable-md navbar-light bg-faded">
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="#">Nové</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Pery</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Tvár</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Oči</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Pleť</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Nechty</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#" style="font-color: red">Výpredaj</a>
+          </li>
+        </ul>
+        <form class="form-inline my-2 my-lg-0">
+          <input class="form-control mr-sm-2" type="text" placeholder="Search">
+          <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+        </form>
+      </div>
+    </nav>
+</div>
+
+<!-- <nav class="navbar navbar-toggleable-md navbar-inverse" style="background-color: #000000">
+    <div class="container-fluid">
+        <div class="navbar-header">
+   <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+      </button>
+              <a class="navbar-brand" href="/">
+                  <img src="/images/logow.png" width="350" height="50" alt="">
+              </a>
+          </div>
+         <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                  <ul class="nav navbar-nav navbar-right">
+                      <a class="nav-link" href="/kosik/">
+                          <img src="/images/kosik.png" class="img-rounded" aria-hidden="true" style="height:25px; width:25px"> Košík
+                          <span class="badge">{{session.cart.totalQty}}</span>
+                      </a>
+                    </li>
+                    <li class="nav-item dropdown">
+                      <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">  <img src="/images/pouz.png" class="img-circle" style="height:25px; width:25px"><span class="caret"></span>
+                        Používateľ
+                      </a>
+                      <div class="dropdown-menu my-2 my-lg-0" aria-labelledby="navbarDropdownMenuLink" align="right">
+                          {{# if login}}
+                        <a class="dropdown-item" href="/user/userprofile">Tvoj účet</a>
+                        <a class="dropdown-item" href="/user/logout">Odhlásiť</a>
+                        {{ else }}
+                        <a class="dropdown-item" href="/user/login">Prihlás sa</a>
+                        <a class="dropdown-item" href="/user/signup"> Zaregistrovať </a>
+                        {{/if}}
+                      </div>
+                    </li>
+               </div>
+       </div>
+</nav> -->

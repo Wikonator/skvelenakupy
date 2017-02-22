@@ -1,0 +1,33 @@
+<div class= "row">
+    <div class="col-md-4 col-md-offset-4">
+    <h3> Sem dame novy variant produktu  </h3>
+{{# if success }}
+    <div class="alert alert-danger">
+{{/ if }}
+
+        <div>
+    <form action="/variant-pridaj" method="post" enctype=multipart/form-data>
+        <div class="form-group">
+            <label for="nazov">S tymto sa nebabri</label>
+            <textarea name="productID" class="form-control" id="productID" rows="1">{{this.prodID}}</textarea>
+        </div>
+        <div class="form-group">
+            <label for="nazov">Sem napis variant napr. farbu</label>
+            <textarea name="nazov" class="form-control" id="nazov" rows="1"></textarea>
+        </div>
+        <div class="form-group">
+            <label for="InputFile">Foto velke</label>
+            <input name="InputFile" type="file" class="form-control-file" id="InputFile" aria-describedby="fileHelp">
+            <small id="fileHelp" class="form-text text-muted">sem daj velku fotku</small>
+        </div>
+        <div class="form-group">
+            <label for="InputFile">Foto malinke</label>
+            <input name="thumbFile" type="file" class="form-control-file" id="thumbFile" aria-describedby="fileHelp">
+            <small id="thumbHelp" class="form-text text-muted">sem daj Fotku tovaru.</small>
+        </div>
+        <span class="input-group-btn">
+        <button class="btn btn-default" type="submit">Go!</button>
+      </span>
+  </form>
+    </div>
+    </div>

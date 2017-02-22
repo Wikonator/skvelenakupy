@@ -1,0 +1,54 @@
+<div class = "row">
+  <div class="col-md-4 col-md-offset-4">
+    <div>
+    <h4> Kam to bude? </h4>
+    <p> Napíš nám, kam by si chcela aby ti donáška prišla? </p>
+    </div>
+
+{{#if notLoggedIn}}
+
+    <p> Nechceš už nikdy vypĺňať tieto detaily?</p>
+        <a href="/signup"> Zaregistruj sa! </a> alebo <a href="/login"> sa Prihlás </a>
+    <!-- <p> Neboj, hneď sa vrátiš naspäť sem</p> -->
+{{/if}}
+    <div>
+        <form id="shipping-form" action="/shipping" method="post">
+            <div class="form-group">
+                <label for="firstName">Meno</label>
+                <input class="form-control" type="text" name="meno" id="firstName" placeholder="Jana">
+            </div>
+            <div class="form-group">
+                <label for="lastName">Priezvisko</label>
+                <input class="form-control" type="text" name="priezvisko" id="lastName" placeholder="Eyrová">
+           </div>
+           <div class="form-group">
+               <label for="email">E-mail</label>
+               <input class="form-control" type="email" name="email" id="email" placeholder="jane.eyre@royalm.co.uk">
+          </div>
+           <div class="form-group">
+                <label for="ulica">Ulica</label>
+                <input class="form-control" type="text" name="ulica" id="ulica" placeholder="Gateshead Hall">
+           </div>
+           <div class="form-group">
+                <label for="cislo">Číslo</label>
+                <input class="form-control" type="text" name="cislo" id="cislo" placeholder="42">
+           </div>
+           <div class="form-group">
+                <label for="mesto">Mesto</label>
+                <input class="form-control" type="text" name="mesto" id="mesto" placeholder="Morton">
+           </div>
+           <div class="form-group">
+                <label for="psc">PSČ</label>
+                <input class="form-control" type="text" name="psc" id="psc" placeholder="92601">
+           </div>
+           <div class="form-group" >
+                <label class="radio-inline"><input type="radio" name="platba" value="1" >Kartou</label>
+                <label class="radio-inline"><input type="radio" name="platba" value="2" >Na Dobierku</label>
+                <!-- <label class="radio-inline"><input type="radio" name="platba" value="3" disabled>BitCoin</label> -->
+           </div>
+           <br>
+           <button type="submit" class="btn btn-primary"> Zaplatím </button>
+
+        </form>
+  </div>
+</div>

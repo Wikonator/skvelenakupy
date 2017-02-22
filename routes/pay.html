@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Pri Pokladni</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel='stylesheet' type="text/css" href='/stylesheets/style.css' media="all" />
+    <!-- <link rel="stylesheet" type="text/css" href="/stylesheets/style2.css" media="print" /> -->
+  </head>
+  <body>
+      <nav class="navbar navbar-default">
+        <div class="container-fluid">
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/" style="font-family":"Broadway" >Deborah Milano </a>
+          </div>
+
+            <ul class="nav navbar-nav navbar-right">
+              <li>
+                  <a href="/kosik/">
+                      <img src="/images/kosik.png" class="img-rounded" aria-hidden="true" style="height:25px; width:25px"> Košík
+                      <span class="badge"></span>
+                  </a>
+              </li>
+              <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> <img src="/images/pouz.png" class="img-circle" style="height:25px; width:25px">Môj účet<span class="caret"></span></a>
+                <ul class="dropdown-menu">
+
+                        <li><a href="/user/userprofile">Tvoj účet</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="/user/logout">Logout</a></li>
+
+
+                </ul>
+              </li>
+            </ul>
+          </div><!-- /.navbar-collapse -->
+        </div><!-- /.container-fluid -->
+      </nav>
+      <div class="container">
+
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+
+    <form id="checkout-form" action="/checkout" method="post">
+  <div id="error-message"></div>
+
+  <label for="card-number">Card Number</label>
+  <div class="hosted-field" id="card-number"></div>
+
+  <label for="cvv">CVV</label>
+  <div class="hosted-field" id="cvv"></div>
+
+  <label for="expiration-date">Expiration Date</label>
+  <div class="hosted-field" id="expiration-date"></div>
+
+  <input type="hidden" name="payment-method-nonce">
+  <input type="submit" value="Zaplatiť" disabled>
+</form>
+
+<script src="https://js.braintreegateway.com/web/3.6.2/js/client.min.js"></script>
+
+<script src="https://js.braintreegateway.com/web/3.6.2/js/hosted-fields.min.js"></script>
+
+<script>
+var form = document.querySelector('#checkout-form');
+var submit = document.querySelector('input[type="submit"]');
+var authorization = $(document).on("load", $.ajax({
+      url:"/client-token",
+      data:"username=test",
+      type:"get",
+      success: function(author) {
+          console.log(author);
+          console.log("ajax successful");
+          braintree.client.create({
+            authorization: author
+          }, function (clientErr, clientInstance) {
+            if (clientErr) {
+                console.log(clientErr);
+            //   console.log("there was a client creation error");
+              return;
+            }
+
+            braintree.hostedFields.create({
+              client: clientInstance,
+              styles: {
+                'input': {
+                  'font-size': '14pt'
+                },
+                'input.invalid': {
+                  'color': 'red'
+                },
+                'input.valid': {
+                  'color': 'green'
+                }
+              },
+              fields: {
+                    number: {
+                      selector: '#card-number',
+                      placeholder: '4111 1111 1111 1111'
+                    },
+                    cvv: {
+                      selector: '#cvv',
+                      placeholder: '123'
+                    },
+                    expirationDate: {
+                      selector: '#expiration-date',
+                      placeholder: '10/2019'
+                  }
+              }
+            }, function (hostedFieldsErr, hostedFieldsInstance) {
+              if (hostedFieldsErr) {
+                console.log("there was a hosted fields error");
+                console.log(hostedFieldsErr);
+                return;
+              }
+              submit.removeAttribute('disabled');
+
+              form.addEventListener('submit', function (event) {
+                 event.preventDefault();
+
+                 hostedFieldsInstance.tokenize(function (tokenizeErr, payload) {
+                   if (tokenizeErr) {
+                       log
+                     console.log(tokenizeErr);
+                     return;
+                   }
+                   document.querySelector('input[name="payment-method-nonce"]').value = payload.nonce;
+                   form.submit();
+                 });
+               }, false);
+            });
+          });
+      }
+    }));
+
+
+
+</script>
+
+      </div>
+    </body>
+</html>

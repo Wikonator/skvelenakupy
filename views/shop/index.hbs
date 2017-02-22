@@ -1,0 +1,28 @@
+{{# each products }}
+<div class="row">
+    {{# each this }}
+        <div class="col-sm-6 col-md-4">
+      <div class="thumbnail">
+          <a href="/itemView/{{this._id}}">
+        <img alt="..." class="img-responsive" src= {{ this.imagePath }} >
+        <div class="caption">
+          <h3>{{this.title}}</h3>
+          <p class="description">{{this.description}}</p>
+              <div class="price"> {{this.price}} €</div>
+              <a href="/add-to-cart/{{this._id}}" class="btn btn-success pull-right" role="button"> Pridaj do košíka </a>
+        </div>
+    </a>
+      </div>
+    </div>
+    {{/each}}
+
+ </div>
+{{/each}}
+<!-- <script>
+    $(".thumbnail").click(
+        {
+
+    }, function(){
+
+    });
+</script> -->

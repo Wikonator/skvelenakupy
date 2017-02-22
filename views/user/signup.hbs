@@ -1,0 +1,24 @@
+<div class = "row">
+    <div class="col-md-4 col-md-offset-4">
+        <h1> Zaregistruj sa</h1>
+        {{#if hasErrors}}
+        <div class="alert alert-danger">
+            {{#each messages}}
+                <p>{{this}}</p>
+            {{/each}}
+        {{/if}}
+        <form action="/user/signup" method="post">
+            <div class="form-group">
+                <label for="email"> E-mail </label>
+                <input type="text" id="email" name="email" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="password">Heslo</label>
+                <input type="password" id="heslo" name="password" class="form-control">
+            </div>
+            <input type="hidden" name="_csrf" value= "{{csrfToken}}">
+    <button type="submit" class="btn btn-primary"> Pridaj sa! </button>
+        </form>
+        <div style="display:none"> {{ csrfToken }} </div>
+    </div>
+</div>

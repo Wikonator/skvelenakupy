@@ -1,0 +1,40 @@
+body {
+	font-family: Arial,"Helvetica Neue","Helvetica",Helvetica,sans-serif;
+}
+
+.navbar-right .navbar-oben {
+    float: right;
+}
+
+#navbarDropdownMenuLink {
+	cursor: default;
+}
+
+.navina {
+	display: inline-block;
+}
+
+.thumbnail img {
+	max-height: 150px
+}
+
+.variantListItem {
+	height: 50px;
+	width: 50px
+}
+
+.thumbnail description {
+	color: #000;
+}
+
+.price {
+	text-align: center;
+	font-size: 18px;
+	direction: ltr;
+	color: black;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	line-height: 1;
+
+}
