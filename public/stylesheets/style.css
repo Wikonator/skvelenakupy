@@ -8,10 +8,15 @@ body {
 
 #navbarDropdownMenuLink {
 	cursor: default;
+	margin-right: 15px;
 }
 
 .navina {
 	display: inline-block;
+}
+
+.stack {
+	position: absolute;
 }
 
 .thumbnail img {
