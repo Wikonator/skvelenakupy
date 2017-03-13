@@ -7,7 +7,7 @@
             <img src="/images/logow.png" class="img-fluid" alt="Responsive image">
         </a>
         <ul class="navbar-nav d-flex flex-row flex-nowrap ml-auto mr-sm-5 mr-md-5 mr-lg-0">
-            <li class="nav-item hidden-lg-up">
+            <li class="nav-item hidden-lg-up ikonamala">
                  <a class="nav-link"><img src="/images/search.png" alt="search"></a>
             </li>
             <li class="nav-item">
@@ -15,7 +15,7 @@
                     <img src="/images/kosik.png" class="img-rounded" aria-hidden="true" style="height:25px; width:25px"> Košík
                     <span class="badge"></span>
                 </a>
-                <a class="nav-link hidden-lg-up" href="/kosik/">
+                <a class="nav-link hidden-lg-up ikonamala" href="/kosik/">
                     <img src="/images/kosik.png" class="img-rounded" aria-hidden="true" style="height:25px; width:25px">
                     <span class="badge"></span>
                 </a>
@@ -33,6 +33,18 @@
                 </div>
             </li>
             <li class="nav-link hidden-lg-up">
+
+                <div class="size">
+                	<!-- <input type="text" name="test" value="choose your size" class="field" readonly="readonly" /> -->
+                    <img src="/images/pouz.png" class="img-circle field" style="height:25px; width:25px; margin-right:15px">
+                    <ul class="list">
+                        {{# if login}}
+                        <li class="dropdown-item" onclick="location.href='/user/userprofile'">Tvoj účet</li>
+                        <li class="dropdown-item"  onclick="location.href='/user/logout'">Odhlásiť</li> {{ else }}
+                        <li class="dropdown-item" onclick="location.href='/user/login'">Prihlás sa</li>
+                        <li class="dropdown-item"  onclick="location.href='/user/signup'"> Zaregistrovať </li> {{/if}}
+                    </ul>
+                </div>
             </li>
         </ul>
     </nav>
@@ -68,38 +80,3 @@
       </div>
     </nav>
 </div>
-
-<!-- <nav class="navbar navbar-toggleable-md navbar-inverse" style="background-color: #000000">
-    <div class="container-fluid">
-        <div class="navbar-header">
-   <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-      </button>
-              <a class="navbar-brand" href="/">
-                  <img src="/images/logow.png" width="350" height="50" alt="">
-              </a>
-          </div>
-         <div class="collapse navbar-collapse" id="navbarNavDropdown">
-                  <ul class="nav navbar-nav navbar-right">
-                      <a class="nav-link" href="/kosik/">
-                          <img src="/images/kosik.png" class="img-rounded" aria-hidden="true" style="height:25px; width:25px"> Košík
-                          <span class="badge">{{session.cart.totalQty}}</span>
-                      </a>
-                    </li>
-                    <li class="nav-item dropdown">
-                      <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">  <img src="/images/pouz.png" class="img-circle" style="height:25px; width:25px"><span class="caret"></span>
-                        Používateľ
-                      </a>
-                      <div class="dropdown-menu my-2 my-lg-0" aria-labelledby="navbarDropdownMenuLink" align="right">
-                          {{# if login}}
-                        <a class="dropdown-item" href="/user/userprofile">Tvoj účet</a>
-                        <a class="dropdown-item" href="/user/logout">Odhlásiť</a>
-                        {{ else }}
-                        <a class="dropdown-item" href="/user/login">Prihlás sa</a>
-                        <a class="dropdown-item" href="/user/signup"> Zaregistrovať </a>
-                        {{/if}}
-                      </div>
-                    </li>
-               </div>
-       </div>
-</nav> -->
