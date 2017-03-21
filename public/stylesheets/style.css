@@ -27,7 +27,7 @@ body {
 
 .size>ul.list { display:none;
 	position: absolute;
-	left: -149px;
+	left: -90px;
 	top: 27px;
 	z-index: 999;
 	width: 175px;
