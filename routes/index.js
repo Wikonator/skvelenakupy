@@ -34,7 +34,7 @@ router.get("/", function(req, res, next) {
 });
 
 router.get("/search", function(req, res, next) {
-    var products = Product.find(function (err, docs) {
+    var products = Product.find({}, null, {sort: {_id: -1}},function (err, docs) {
         var productChunks = [];
         var chunkSize = 3;
         for (var i=0; i < docs.length; i += chunkSize) {
