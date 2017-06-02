@@ -3,6 +3,10 @@ body {
 	padding-top: 145px;
 }
 
+a:link {
+	text-decoration: none;
+}
+
 .navbar-right .navbar-oben {
     float: right;
 }
@@ -80,12 +84,18 @@ body {
 
 .thumbnail description {
 	color: #000;
+	text-decoration: none;
 }
 
-.caption a {
+.thumbnail {
+	text-decoration: none;
+}
+
+.caption {
 	text-decoration: none;
 	color: black;
 }
+
 
 .price {
 	text-align: center;
