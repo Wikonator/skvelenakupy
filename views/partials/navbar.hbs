@@ -5,7 +5,16 @@
             </a>
             <ul class="navbar-nav d-flex flex-row flex-nowrap ml-auto mr-lg-0 col-12 col-sm-12 col-md-3 col-lg-3 col-xl-3">
                 <li class="nav-item hidden-lg-up ikonamala">
-                     <a class="nav-link"><img src="/images/search.png" alt="search"></a>
+                    <div class="size">
+                     <a class="nav-link">
+                         <img src="/images/search.png" alt="search" class="field">
+                     </a>
+                     <ul class="list" id="miniSearch">
+                             <form class="form-inline my-2" action="/search" method="post">
+                                 <input class="form-control mr-sm-2" id="search" name="search" placeholder="Hľadám..." type="text">
+                             </form>
+                     </ul>
+                 </div>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link hidden-md-down" href="/kosik/">
@@ -30,9 +39,7 @@
                     </div>
                 </li>
                 <li class="nav-link hidden-lg-up">
-
                     <div class="size">
-                    	<!-- <input type="text" name="test" value="choose your size" class="field" readonly="readonly" /> -->
                         <img src="/images/pouz.png" class="img-circle field" style="height:25px; width:25px; margin-right:15px">
                         <ul class="list">
                             {{# if login}}
@@ -52,7 +59,7 @@
       <div class="collapse navbar-collapse" id="navbarSupportedContent" style="clear">
         <ul class="navbar-nav mr-auto">
           <li class="nav-item">
-            <a class="nav-link" href="/search">Nové</a>
+            <a class="nav-link" href="/search ">Nové</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="#">Pery</a>

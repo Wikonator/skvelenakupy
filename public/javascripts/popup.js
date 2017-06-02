@@ -1,4 +1,4 @@
-(function($){
+ (function($){
 	$.fn.styleddropdown = function(){
 		return this.each(function(){
 			var obj = $(this)

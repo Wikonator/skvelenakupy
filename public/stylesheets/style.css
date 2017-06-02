@@ -28,7 +28,7 @@ body {
 .size>ul.list { display:none;
 	position: absolute;
 	left: -90px;
-	top: 27px;
+	top: 35px;
 	z-index: 999;
 	width: 175px;
 	margin: 0;
@@ -51,6 +51,16 @@ body {
 	border:none
 }
 
+#miniSearch {
+	position: absolute;
+	left: -25px;
+	top: 35px;
+	z-index: 995;
+	width: 215px;
+	margin: 0;
+	padding: 10px;
+}
+
 .ikonamala {
 	margin-right: 10px
 }
@@ -70,6 +80,11 @@ body {
 
 .thumbnail description {
 	color: #000;
+}
+
+.caption a {
+	text-decoration: none;
+	color: black;
 }
 
 .price {
