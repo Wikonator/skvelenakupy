@@ -9,7 +9,12 @@
   </head>
   <body>
       {{> navbar }}
-      <div class="container">
+      <div class="container-fluid" id="deboraHome">
+          <div class="row">
+              <img src="/images/deboHome.jpg" class="img-fluid hidden-md-up col-md-12" alt="Responsive image" id="homeImg">
+          </div>
+      </div>
+      <div class="container-fluid">
           {{{body}}}
       </div>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>

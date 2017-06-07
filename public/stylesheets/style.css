@@ -2,6 +2,17 @@ body {
 	font-family: Arial,"Helvetica Neue","Helvetica",Helvetica,sans-serif;
 	padding-top: 145px;
 }
+#deboraHome {
+	display: block;
+	position: relative;
+	top: -87px;
+}
+
+#homeImg {
+	padding-right: 0px;
+	padding-left: 0px;
+}
+
 
 a:link {
 	text-decoration: none;
@@ -63,6 +74,10 @@ a:link {
 	width: 215px;
 	margin: 0;
 	padding: 10px;
+}
+
+.navbar {
+	margin-bottom: 0px;
 }
 
 .ikonamala {
