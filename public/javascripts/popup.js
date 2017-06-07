@@ -28,3 +28,11 @@
 $(function(){
 	$(".size").styleddropdown();
 });
+
+$(function(){
+    if ($("#navbarSupportedContent").attr("aria-expanded")=="true")
+        {
+            console.log("I flipped the bar");
+            $("#greyNavbar").toggleClass("hidden-md-down");
+        }
+});
