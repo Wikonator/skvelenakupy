@@ -29,10 +29,9 @@ $(function(){
 	$(".size").styleddropdown();
 });
 
-$(function(){
-    if ($("#navbarSupportedContent").attr("aria-expanded")=="true")
+$(document).ready(function(){
+    $("#burgerNavbarToggler").click(function()
         {
-            console.log("I flipped the bar");
             $("#greyNavbar").toggleClass("hidden-md-down");
-        }
+        })
 });

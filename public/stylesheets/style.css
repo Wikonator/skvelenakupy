@@ -84,6 +84,12 @@ a:link {
 	margin-right: 10px
 }
 
+#carouselRow {
+	vertical-align: top;
+	position: absolute;
+	top: -87px;
+}
+
 .stack {
 	position: absolute;
 }
