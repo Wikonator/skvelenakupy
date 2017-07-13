@@ -23,6 +23,7 @@
     "mongodb": "^2.2.10",
     "mongoose": "^4.6.4",
     "morgan": "~1.7.0",
+    "mpromise": "^0.5.5",
     "multer": "^1.2.0",
     "nodemailer": "^2.7.0",
     "nodemailer-mailgun-transport": "git+https://github.com/orliesaurus/nodemailer-mailgun-transport.git",

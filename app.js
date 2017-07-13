@@ -29,17 +29,15 @@ var routes = require('./routes/index');
 var userRoutes = require('./routes/user');
 
 mongoose.Promise = global.Promise;
-mongoose.connect("localhost:27017/eshop", function () {
-    console.log("I connected");
-    return mongoose.connection;
+mongoose.connect("mongodb://localhost:27017/eshop", function () {
+    console.log("I'm connecting to Mongo");
 });
 require("./config/passport");
 
 var db = mongoose.connection;
 db.on("error", console.error.bind(console, "connection error:"));
 db.once("open", function() {
-    console.log("this is working");
-
+    console.log("Mongo here: this is working!");
 });
 
 // view engine setup

@@ -35,26 +35,34 @@ router.get("/", function(req, res, next) {
 
 router.get("/search", function(req, res, next) {
     var products = Product.find({}, null, {sort: {_id: -1}},function (err, docs) {
-        var productChunks = [];
-        var chunkSize = 3;
-        for (var i=0; i < docs.length; i += chunkSize) {
-            productChunks.push(docs.slice(i, i+ chunkSize));
-        }
+      if (err) {
+        console.log(err);
+      } else {
+          var productChunks = [];
+          var chunkSize = 3;
+          for (var i=0; i < docs.length; i += chunkSize) {
+              productChunks.push(docs.slice(i, i+ chunkSize));
+          }
         res.render('shop/index', { title: 'Deborah Milano', products: productChunks });
+        }
     });
 });
 
 router.post("/search", function (req, res, next) {
+    var query = Product.find()
     console.log(req.body);
     var searchString = req.body.search;
     var products = Product.find({"$text": {"$search":"'"+ searchString + "'" }}, function (err, docs) {
-        var productChunks = [];
-        var chunkSize = 3;
-        console.log(docs);
-        for (var i=0; i < docs.length; i += chunkSize) {
-            productChunks.push(docs.slice(i, i+ chunkSize));
-        }
-        res.render('shop/index', { title: 'Deborah Milano', products: productChunks });
+      if (err) {
+        console.log(err);
+      } else {
+            var productChunks = [];
+            var chunkSize = 3;
+            for (var i=0; i < docs.length; i += chunkSize) {
+                productChunks.push(docs.slice(i, i+ chunkSize));
+            }
+            res.render('shop/index', { title: 'Deborah Milano', products: productChunks });
+          }
     });
 });
 
@@ -406,25 +414,6 @@ router.post("/variantsearch", function (req, res, next) {
     });
 });
 
-// router.get("/soap", function(req, res, next) {
-//     console.log("dropped my soap");
-//     soap.createClient(wsdl, function(err, client) {
-//         console.log("creating client");
-//         if (err) {
-//             // console.log(err);
-//             throw err;
-//         } else {
-//         client.echo(args, function(err, result) {
-//             console.log("running MyFunction");
-//             if (err) {
-//                 console.log(err);
-//             } else {
-//             console.log(result);
-//             }
-//         });
-//         }
-//     });
-// });
 
 module.exports = router;
 
