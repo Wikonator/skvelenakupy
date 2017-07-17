@@ -6,7 +6,7 @@ var mongoose = require("mongoose");
 
 mongoose.Promise = global.Promise;
 
-mongoose.connect("mongodb://localhost:27017/eshop");
+mongoose.connect("mongodb://heroku_d8shn9vf:b23qpiicl14c7p01c41tla6pfc@ds161162.mlab.com:61162/heroku_d8shn9vf");
 
  var products = [
     new Product({
