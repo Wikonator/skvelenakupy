@@ -23,7 +23,7 @@ var gateway = braintree.connect({
 
 var mejlautor = {
   auth: {
-    api_key: 'key-694ac15afdfd518fdf6872bbf5200f0e',
+    api_key: config.mailerApiKey,
     domain: 'deborahmilano.sk'
   }
 };
