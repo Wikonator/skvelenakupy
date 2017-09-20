@@ -10,7 +10,8 @@ var express = require('express'),
     nodemailer = require('nodemailer'),
     //config is where all the keys are
     config = require("../models/config"),
-    mg = require('nodemailer-mailgun-transport'),
+    mg = require("nodemailer-mailgun-transport"),
+    fs = require("fs"),
     https = require("https");
 
 /* GET home page. */
@@ -122,17 +123,26 @@ router.get("/itemView/:id", function(req, res, next) {
         }
     });
 });
+
 router.get("/variant-add/:id", function (req, res, next) {
     var productID = req.params.id;
     console.log(productID);
     res.render("user/variant", {prodID: productID});
 });
 
+
+router.get("/admin",
+// jeAdmin,
+  function(req, res, next){
+    res.render("user/admin");
+});
+
 var cpUpload = upload.fields([{ name: 'InputFile', maxCount: 1 }, { name: 'thumbFile', maxCount: 1 }]);
 router.post("/variant-pridaj", cpUpload, function (req, res, next) {
+    var prodIdString = req.body.productID.toString()
     // console.log(req.files);
     var mongoObject = new Variant({
-        productID : req.body.productID,
+        productID : prodIdString,
         imagePath : "/images/produkty/" + req.files['InputFile'][0].filename,
         thumbPath : "/images/produkty/" + req.files['thumbFile'][0].filename,
         color : req.body.nazov
@@ -155,19 +165,20 @@ router.post("/variant-pridaj", cpUpload, function (req, res, next) {
     } else {
         console.log("else on upload fired");
         res.render("user/admin", {
-            success: "neco sa pokazilo, napis Viktorovi"
+            error: "neco sa pokazilo, napis Viktorovi"
         });
     }
 });
 
-router.get("/admin", jeAdmin, function(req, res, next){
-    res.render("user/admin");
-});
 
-router.post("/upload", jeAdmin, upload.single("InputFile"), function(req, res, next) {
+var produUpload = upload.fields([{ name: 'InputFile', maxCount: 1 }, { name: 'thumbFile', maxCount: 1 }]);
+router.post("/upload",
+// jeAdmin,
+produUpload, function(req, res, next) {
     console.log(req.body);
     var mongoObject = new Product ({
             imagePath : "",
+            thumbPath : "",
             title : req.body.nazov,
             description : req.body.popis,
             price : req.body.cena,
@@ -175,10 +186,11 @@ router.post("/upload", jeAdmin, upload.single("InputFile"), function(req, res, n
             brand: req.body.znacka,
             color: req.body.farba
         });
-        console.log(req.file);
-    if (req.file) {
+        console.log(req.files);
+    if (req.files) {
         console.log("if on upload fired");
-        mongoObject.imagePath = "/images/produkty/" + req.file.filename;
+        mongoObject.imagePath = "/images/produkty/" + req.files['InputFile'][0].filename;
+        mongoObject.thumbPath = "/images/produkty/" + req.files['thumbFile'][0].filename
         console.log(mongoObject);
         mongoObject.save(function(err, result) {
             if (err) {
@@ -194,8 +206,122 @@ router.post("/upload", jeAdmin, upload.single("InputFile"), function(req, res, n
     } else {
         console.log("else on upload fired");
         res.render("user/admin", {
-            success: "neco sa pokazilo"
+            error: "neco sa pokazilo, zavolaj Viktorovi"
         });
+    }
+});
+
+router.get("/adminDelete",
+// jeAdmin,
+function(req,res,next) {
+  res.render("user/adminDelete")
+})
+
+router.post("/adminSearch",
+// jeAdmin,
+function(req,res,next) {
+  console.log(req.body);
+  if (req.body.variantOption) {
+    var productID = req.body.productID;
+    console.log(productID);
+    console.log("going Variant searching");
+    var variants = Variant.find({"productID" : productID}, function (err, docs) {
+        if (err) {
+          console.log(err);
+          res.render("user/adminDelete", { error : "variant search nefungoval"});
+        } else {
+          console.log(docs);
+          res.render("user/adminDelete", { products : docs,
+          variant : true });
+        }
+    })
+  } else {
+    console.log("going product searching");
+    var searchString = req.body.search;
+    var products = Product.find({"$text": {"$search":"'"+ searchString + "'" }}, function (err, docs) {
+      if (err) {
+        console.log(err);
+      } else {
+        console.log(docs);
+        res.render('user/adminDelete', { success:"našiel som",
+         products: docs });
+        }
+      })
+    }
+});
+
+function deleteFiles(files, callback){
+  fs.unlink
+  var i = 2;
+  files.forEach(function(files){
+    fs.unlink(files.filepath, function(err) {
+      i--;
+      if (err) {
+        callback(err);
+        return;
+      } else if (i <= 0) {
+        callback(null);
+      }
+    });
+  });
+}
+
+router.post("/adminDelete",
+// jeAdmin,
+function(req,res,next) {
+  var basePath = "./public",
+      imagePath = basePath + req.body.imagePath,
+      thumbPath = basePath + req.body.thumbPath;
+  if (req.body.variantDelete) {
+    var variantID = req.body.variantID;
+    Variant.findById(variantID).remove(function (err, resp) {
+      if (err) {
+        console.log(err);
+        res.render("user/adminDelete", { error: "nope, nevymazal som"});
+      } else {
+        fs.unlink(imagePath, function (err) {
+          if (err) {
+            console.log(err);
+            res.render("user/adminDelete", { error: "neisiel mi vymazat velky obrazok"});
+          } else {
+            fs.unlink(thumbPath, function (e) {
+              if (e) {
+                console.log(e);
+                res.render("user/adminDelete", { error: "neisiel mi vymazat maly obrazok"});
+              } else {
+                res.render("user/adminDelete", { success:"vymazal som variant"});
+              }
+            })
+          }
+        });
+      }
+    })
+  } else {
+    var prodID = req.body.productID;
+    Product.remove({"_id": prodID}, function (err, response) {
+      if (err) {
+        console.log(err);
+        res.render("user/adminDelete", { error: "nope, nevymazal som"})
+      } else {
+          fs.unlink(imagePath, function (err) {
+            if (err) {
+              console.log(err);
+              res.render("user/adminDelete", { error: "neisiel mi vymazat velky obrazok"});
+            } else if (req.body.thumbPath) {
+              fs.unlink(thumbPath, function (e) {
+                if (e) {
+                  console.log(e);
+                  res.render("user/adminDelete", { error: "neisiel mi vymazat maly obrazok"});
+                } else {
+                  res.render('user/adminDelete', { success:"vymazal som Produkt"});
+                }
+              })
+            } else {
+              res.render('user/adminDelete', { success:"vymazal som Produkt"});
+            }
+          });
+        }
+      })
     }
 });
 
@@ -226,7 +352,7 @@ router.get("/email", function (req, res, next) {
     var sub = "Potvrdenie objednávky",
         mejl = confirmedDetails.email,
         bcc = "topes.jebal@gmail.com",
-        txt = "Ahoj " + confirmedDetails.meno + " tvoja objednávka bola prijatá a čo nevidieť ti ju posielam. Ďakujem že si u nás nakúpila. <3";
+        txt = "Ahoj " + confirmedDetails.meno + ", tvoja objednávka bola prijatá a čo nevidieť ti ju posielam. Ďakujem že si u nás nakúpila. <3";
         var order = new Order({
                 user: req.user || "5884e80eae21f8360e50632a",
                 firstName: confirmedDetails.meno,

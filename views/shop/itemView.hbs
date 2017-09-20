@@ -1,20 +1,38 @@
 
 <div class="row">
+  <div class="col-2"> </div>
+  <div class="col-6">
     <div id="title">
         {{productResults.title}}
     </div>
     <div class="col-sm-6 col-md-4">
-    <div id="image">
+      <div id="imageWrapper">
+        <div>
+            <img id="imageItemView" alt="Responsive image" class="img-fluid" src={{productResults.imagePath}} ></img>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-4">
+      <ul id="variants" >
 
-        <img alt="..." class="img-responsive" src={{productResults.imagePath}} ></img>
+            <li> <a class="variantId" data={{productResults.imagePath}} > <img class="variantListItem" src={{productResults.thumbPath}} ></img> </li>
+
+          {{# each variantResults }}
+          <li> <a class="variantId" data={{this.imagePath}} >  <img class="variantListItem" src={{this.thumbPath}} ></img> </li>
+            </a>
+          {{/ each }}
+      </ul>
+      <div>
+          <p> {{productResults.description}} </p>
+      </div>
+      <a href="/add-to-cart/{{productResults._id}}" class="btn btn-success pull-right" role="button"> Pridaj do košíka </a>
     </div>
-    <ul id="variants" >
-        {{# each variantResults }}
-        <li > <img class="variantListItem" src={{this.thumbPath}} ></img> </li>
-        {{/ each }}
-    </ul>
-    <div>
-        <p> {{productResults.description}} </p>
-    </div>
-    <a href="/add-to-cart/{{productResults._id}}" class="btn btn-success pull-right" role="button"> Pridaj do košíka </a>
-</div>
+  </div>
+<!-- <script>
+  $(".variantId").on("click", function () {
+    var img = $(this).attr("data");
+    console.log(img);
+    $("#image").attr("src", img)
+  })
+</script> -->

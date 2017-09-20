@@ -4,6 +4,7 @@ var mongoose = require("mongoose"),
 
     Product = new Schema({
         imagePath: {type: String, required: true},
+        thumbPath: {type: String, required: false},
         title: {type: String, required: true},
         description: {type: String, required: true},
         price: {type: Number, required: true},

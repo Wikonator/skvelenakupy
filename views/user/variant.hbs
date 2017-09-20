@@ -2,9 +2,13 @@
     <div class="col-md-4 col-md-offset-4">
     <h3> Sem dame novy variant produktu  </h3>
 {{# if success }}
-    <div class="alert alert-danger">
+    <div class="alert alert-success">
+      <h2> {{this.success}} </h2>
 {{/ if }}
-
+{{# if error}}
+  <div class="alert alert-error">
+    <h1> {{this.error}} </h1>
+{{/ if }}
         <div>
     <form action="/variant-pridaj" method="post" enctype=multipart/form-data>
         <div class="form-group">
@@ -31,3 +35,4 @@
   </form>
     </div>
     </div>
+  </div>

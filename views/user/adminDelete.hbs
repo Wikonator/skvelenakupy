@@ -1,0 +1,86 @@
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<div class= "row">
+    <div class="col-8">
+    <h3> tu mozes nahravat novy tovar </h3>
+{{# if success }}
+    <div class="alert alert-success">
+    <h2> {{this.success}} </h2>
+{{/ if }}
+{{# if error }}
+    <div class="alert alert-error">
+    <h2> {{this.error}} </h2>
+{{/ if }}
+<div class="row">
+  <div class="col-4" >
+
+  </div>
+    <div class="col-8">
+      <br>
+    <h3> co chces vymazat? </h3>
+    <div>
+        <form id="deleteForm" action="/adminSearch" method="post">
+          <div class="input-group">
+            <span class="input-group-btn">
+              <button class="btn btn-warning" type="submit" form="deleteForm" >Ideš</button>
+            </span>
+            <input type="text" class="form-control" name="search" id="search" placeholder="Search for...">
+          </div>
+        </form>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12">
+  {{# if variant }}
+  {{# each products }}
+        <div class="thumbnail">
+          <img alt="..." class="img-responsive" src={{ this.imagePath }}>
+          <div>
+            <img class="img-responsive" src={{ this.thumbPath }} >
+          </div>
+          <div>
+            <p>{{this.color}}</p>
+
+  <form action="/adminDelete" method="post">
+    <button type="submit" class="btn btn-danger"> Vymaž variant</button>
+    <input style="display: none" name="variantDelete" value="true" />
+    <input style="display: none" name="variantID" value= {{this.id}} />
+    <input style="display: none" name="imagePath" value= {{this.imagePath}} />
+    <input style="display: none" name="thumbPath" value= {{this.thumbPath}} />
+  </form>
+</div>
+</div>
+  {{/ each }}
+  {{ else }}
+  {{# each products }}
+        <div class="thumbnail">
+          <img alt="..." class="img-responsive" src= {{ this.imagePath }}>
+
+          <div class="caption">
+            <h3>{{this.title}}</h3>
+            <p class="description">{{this.description}}</p>
+                <div class="price"> {{this.price}} €</div>
+                <form action="/adminDelete" method="post">
+                  <button type="submit" class="btn btn-danger"> Vymaž </button>
+                  <input style="display: none" name="productID" value={{this.id}} />
+                  <input style="display: none" name="imagePath" value={{this.imagePath}} />
+                  {{# if this.thumbPath}}
+                  <input style="display: none" name="thumbPath" value= {{this.thumbPath}} />
+                  {{/ if }}
+                </form>
+                <br>
+                <form action="/adminSearch" method="post">
+                  <button type="submit" class="btn btn-success"> Varianty </button>
+                  <input style="display: none" name="variantOption" value="true" />
+                  <input style="display: none" name="productID" value={{this.id}} />
+                </form>
+          </div>
+
+        </div>
+  {{/ each }}
+  {{/ if }}
+</div>
+
+
+</div>
+</div>
+</div>
