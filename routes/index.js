@@ -50,8 +50,7 @@ router.get("/search", function(req, res, next) {
 });
 
 router.post("/search", function (req, res, next) {
-    var query = Product.find()
-    console.log(req.body);
+    var query = Product.find();
     var searchString = req.body.search;
     var products = Product.find({"$text": {"$search":"'"+ searchString + "'" }}, function (err, docs) {
       if (err) {
@@ -77,7 +76,6 @@ router.get("/add-to-cart/:id", function (req, res, next) {
         }
         cart.add(product, product.id);
         req.session.cart = cart;
-        console.log(req.session.cart);
         res.redirect("/");
     });
 });
@@ -116,7 +114,6 @@ router.get("/itemView/:id", function(req, res, next) {
                     "productResults" : productResults,
                     "variantResults" : variantResults
                 };
-                console.log(expressObject);
                 res.render("shop/itemView", expressObject);
             }
         });
@@ -126,21 +123,17 @@ router.get("/itemView/:id", function(req, res, next) {
 
 router.get("/variant-add/:id", function (req, res, next) {
     var productID = req.params.id;
-    console.log(productID);
     res.render("user/variant", {prodID: productID});
 });
 
 
-router.get("/admin",
-// jeAdmin,
-  function(req, res, next){
+router.get("/admin", jeAdmin, function(req, res, next){
     res.render("user/admin");
 });
 
 var cpUpload = upload.fields([{ name: 'InputFile', maxCount: 1 }, { name: 'thumbFile', maxCount: 1 }]);
 router.post("/variant-pridaj", cpUpload, function (req, res, next) {
     var prodIdString = req.body.productID.toString()
-    // console.log(req.files);
     var mongoObject = new Variant({
         productID : prodIdString,
         imagePath : "/images/produkty/" + req.files['InputFile'][0].filename,
@@ -148,14 +141,10 @@ router.post("/variant-pridaj", cpUpload, function (req, res, next) {
         color : req.body.nazov
     });
     if (req.files) {
-        console.log("if on upload fired");
-        console.log(mongoObject);
         mongoObject.save(function(err, result) {
             if (err) {
-                console.log("neco sa dojebalo");
                 console.log(err);
             } else {
-                console.log("save happened, dissing mongoose");
                     res.render("user/variant", {
                         success: "a je tam! mas dalsi?",
                         prodID: req.body.productID
@@ -163,7 +152,6 @@ router.post("/variant-pridaj", cpUpload, function (req, res, next) {
             }
         });
     } else {
-        console.log("else on upload fired");
         res.render("user/admin", {
             error: "neco sa pokazilo, napis Viktorovi"
         });
@@ -172,10 +160,7 @@ router.post("/variant-pridaj", cpUpload, function (req, res, next) {
 
 
 var produUpload = upload.fields([{ name: 'InputFile', maxCount: 1 }, { name: 'thumbFile', maxCount: 1 }]);
-router.post("/upload",
-// jeAdmin,
-produUpload, function(req, res, next) {
-    console.log(req.body);
+router.post("/upload", jeAdmin, produUpload, function(req, res, next) {
     var mongoObject = new Product ({
             imagePath : "",
             thumbPath : "",
@@ -186,89 +171,59 @@ produUpload, function(req, res, next) {
             brand: req.body.znacka,
             color: req.body.farba
         });
-        console.log(req.files);
     if (req.files) {
-        console.log("if on upload fired");
         mongoObject.imagePath = "/images/produkty/" + req.files['InputFile'][0].filename;
         mongoObject.thumbPath = "/images/produkty/" + req.files['thumbFile'][0].filename
-        console.log(mongoObject);
         mongoObject.save(function(err, result) {
             if (err) {
-                console.log("neco sa dojebalo");
                 console.log(err);
             } else {
-                console.log("save happened, dissing mongoose");
                 res.render("user/admin", {
                     success: "podarilo sa"
                 });
             }
         });
     } else {
-        console.log("else on upload fired");
         res.render("user/admin", {
             error: "neco sa pokazilo, zavolaj Viktorovi"
         });
     }
 });
 
-router.get("/adminDelete",
-// jeAdmin,
-function(req,res,next) {
+router.get("/adminDelete", jeAdmin, function(req,res,next) {
   res.render("user/adminDelete")
 })
 
-router.post("/adminSearch",
-// jeAdmin,
-function(req,res,next) {
-  console.log(req.body);
+router.post("/adminSearch", jeAdmin, function(req,res,next) {
   if (req.body.variantOption) {
     var productID = req.body.productID;
-    console.log(productID);
-    console.log("going Variant searching");
     var variants = Variant.find({"productID" : productID}, function (err, docs) {
         if (err) {
           console.log(err);
           res.render("user/adminDelete", { error : "variant search nefungoval"});
         } else {
-          console.log(docs);
           res.render("user/adminDelete", { products : docs,
           variant : true });
         }
     })
   } else {
-    console.log("going product searching");
     var searchString = req.body.search;
     var products = Product.find({"$text": {"$search":"'"+ searchString + "'" }}, function (err, docs) {
       if (err) {
         console.log(err);
-      } else {
-        console.log(docs);
-        res.render('user/adminDelete', { success:"našiel som",
+      } else if (docs.length == 0){
+        res.render('user/adminDelete', { error:"ništ také tu neni",
          products: docs });
-        }
+       } else {
+         res.render('user/adminDelete', { success: "našiel som toto",
+         products: docs})
+       }
       })
     }
 });
 
-function deleteFiles(files, callback){
-  fs.unlink
-  var i = 2;
-  files.forEach(function(files){
-    fs.unlink(files.filepath, function(err) {
-      i--;
-      if (err) {
-        callback(err);
-        return;
-      } else if (i <= 0) {
-        callback(null);
-      }
-    });
-  });
-}
 
-router.post("/adminDelete",
-// jeAdmin,
-function(req,res,next) {
+router.post("/adminDelete", jeAdmin, function(req,res,next) {
   var basePath = "./public",
       imagePath = basePath + req.body.imagePath,
       thumbPath = basePath + req.body.thumbPath;
@@ -348,7 +303,6 @@ router.get("/client-token", function (req, res) {
 router.get("/email", function (req, res, next) {
     var confirmedDetails = req.session.shipping,
         cart = req.session.cart;
-    // console.log(confirmedDetails);
     var sub = "Potvrdenie objednávky",
         mejl = confirmedDetails.email,
         bcc = "topes.jebal@gmail.com",
@@ -364,15 +318,11 @@ router.get("/email", function (req, res, next) {
                 PSC: confirmedDetails.psc,
                 transactionId: "dobierka"
         });
-        console.log(order);
         order.save(function(chyba, vysledok){
-            console.log("prave som ulozil do data, idem poslat mejl");
             if (chyba) {
                 console.log(chyba);
                 res.render("user/userprofile", {success: "neulozil som objednavku"})
             } else {
-                console.log("posielam mejl");
-                // req.session.cart = null;
                 var mailOptions = {
                     from: "Objednavky@deborahmilano.sk",
                     to: mejl,
@@ -384,8 +334,6 @@ router.get("/email", function (req, res, next) {
                       if (err) {
                           console.log(err);
                        } else {
-                         console.log("mail poslany nacitam stranku");
-                         console.log(info);
                          req.session.cart = null;
                          return res.render("user/userprofile", {success:"email sa poslal"});
                      }
@@ -394,9 +342,6 @@ router.get("/email", function (req, res, next) {
       });
 });
 
-// router.get("/email", function (req, res) {
-//     res.render("user/userprofile");
-// })
 
 router.get("/shipping", function (req, res, next) {
     if (req.isAuthenticated())
@@ -420,7 +365,6 @@ router.post("/shipping", function (req, res, next) {
         psc: Number(req.body.psc),
         platba: Number(req.body.platba)
     };
-    console.log(shipping);
     req.session.shipping = shipping;
     if (shipping.platba == 1) {
     res.sendFile(__dirname + '/pay.html');
@@ -440,9 +384,7 @@ router.post("/checkout", function (req, res, next) {
         var cart = new Cart(req.session.cart ? req.session.cart : {});
         var body = req.body,
           shipping = req.session.shipping;
-        // console.log(shipping);
         var nonceFromTheClient = body[Object.keys(body)[0]];
-        // console.log(nonceFromTheClient);
         gateway.transaction.sale({
             amount: cart.totalPrice,
             paymentMethodNonce: nonceFromTheClient,
@@ -499,15 +441,12 @@ router.post("/checkout", function (req, res, next) {
                                 if (err) {
                                     console.log(err);
                                  } else {
-                                   console.log("mail poslany nacitam stranku");
-                                   console.log(info);
                                    req.session.cart = null;
                                } return res.render("user/userprofile", {success:"email sa poslal"});
                           });
                       }
                   });
               } else {
-                  // res.sendFile(__dirname + '/pay.html');
                   res.render("user/userprofile", {
                       success: "nie je tam success true"
                   });
@@ -520,21 +459,17 @@ router.post("/checkout", function (req, res, next) {
         checkout(req, res, next);
     } else {
         req.user = "5884e80eae21f8360e50632a";
-        console.log(req.user);
         checkout(req, res, next);
     }
 });
 
 
 router.post("/variantsearch", function (req, res, next) {
-    console.log("Im looking for" + req.body.search);
     var searchString = req.body.search;
     Product.find({"$text": {"$search":"'"+ searchString + "'" }}, function (err, docs) {
         if (err) {
             console.log("if on variant search went " + err);
         } else {
-            console.log("else on variant search went");
-            console.log(docs);
             res.send( {"results" : docs} );
         }
     });
@@ -544,21 +479,15 @@ router.post("/variantsearch", function (req, res, next) {
 module.exports = router;
 
 function jeAdmin(req, res, next) {
-    console.log("je Admin naskocil");
-    console.log(req.session);
     if (req.session.admin) {
-        console.log("toto je admin");
         next();
     } else {
-        console.log("toto nie je admin");
         res.redirect("/user/login");
     }
 }
 
 function jePrihlaseny(req, res, next) {
-    console.log("je prihlaseny");
     if (req.isAuthenticated()) {
-        console.log("je autentikovany");
         return next();
     }
     req.session.stareUrl = req.url;

@@ -26,13 +26,11 @@ router.get("/userprofile", jePrihlaseny, function (req, res, next) {
 });
 
 router.get("/logout", jePrihlaseny, function(req, res, next) {
-    console.log("odhlasujem");
     req.logout();
         res.redirect("/");
 });
 
 router.use("/", jeOdhlaseny, function(req, res, next) {
-    console.log("idem cez /");
     next();
 });
 
@@ -76,21 +74,15 @@ router.post("/login", passport.authenticate("local.login", {
 module.exports = router;
 
 function jePrihlaseny(req, res, next) {
-    console.log("idem cez jePrihlaseny");
     if (req.isAuthenticated()) {
-        console.log("je autentikovany");
         return next();
     }
-    console.log("jePrihlaseny else");
     res.redirect("/");
 }
 
 function jeOdhlaseny(req, res, next) {
-    console.log("jeOdhlaseny fired");
     if (!req.isAuthenticated()) {
-        console.log("nie je autentikovany");
         return next();
     }
-    console.log("jeOdhlaseny else");
     res.redirect("/");
 }

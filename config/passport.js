@@ -72,12 +72,10 @@ passport.use("local.login", new LocalStrategy({
             return done(null, false, {message: "Nespravne Heslo"});
         }
         if (user.email == "mamadmin@gmail.com") {
-            console.log(user);
             req.session.admin = true;
-            console.log(req.session.admin);
             return done(null, user);
         } else {
-            console.log("nothing on passport fired, moving on");
+            req.session.admin = false;
             return done(null, user);
         }
         });
