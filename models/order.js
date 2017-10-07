@@ -8,7 +8,7 @@ var mongoose = require("mongoose"),
         firstName: {type: String, required: true},
         lastName: {type: String, required: true},
         ulica: {type: String, required: true},
-        cislo: {type: Number, required: true},
+        cislo: {type: String, required: true},
         mesto: {type: String, required: true},
         PSC: {type: Number, required: true},
         transactionId: {type: String, required: true}

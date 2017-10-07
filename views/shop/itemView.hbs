@@ -3,7 +3,7 @@
   <div class="col-2"> </div>
   <div class="col-6">
     <div id="title">
-        {{productResults.title}}
+        <h3> {{productResults.title}} </h3>
     </div>
     <div class="col-sm-6 col-md-4">
       <div id="imageWrapper">
@@ -15,24 +15,29 @@
   </div>
   <div class="col-4">
       <ul id="variants" >
+        <li>
+          <!-- <a class="variantId"  ></a> -->
+          <img class="variantListItem" src={{productResults.thumbPath}} imageData={{productResults.imagePath}} variantData="default"> </img>
 
-            <li> <a class="variantId" data={{productResults.imagePath}} > <img class="variantListItem" src={{productResults.thumbPath}} ></img> </li>
+        </li>
+        {{# each variantResults }}
+        <li>
+          <!-- <a class="variantId"   </a> -->
+          <img class="variantListItem" src={{this.thumbPath}} imageData={{this.imagePath}} variantData={{this.color}} ></img>
 
-          {{# each variantResults }}
-          <li> <a class="variantId" data={{this.imagePath}} >  <img class="variantListItem" src={{this.thumbPath}} ></img> </li>
-            </a>
+        </li>
           {{/ each }}
       </ul>
       <div>
           <p> {{productResults.description}} </p>
       </div>
-      <a href="/add-to-cart/{{productResults._id}}" class="btn btn-success pull-right" role="button"> Pridaj do košíka </a>
-    </div>
+      <form id="addToCartForm" action="/add-to-cart" method="post">
+        <input style="display: none" name="productID" value={{productResults._id}} />
+        <input id="cartColor" style="display: none" name="color" value="default">
+        <span class="input-group-btn">
+          <button class="btn btn-success pull-right" type="submit" >Ideš</button>
+        </span>
+
+      </form>
+      </div>
   </div>
-<!-- <script>
-  $(".variantId").on("click", function () {
-    var img = $(this).attr("data");
-    console.log(img);
-    $("#image").attr("src", img)
-  })
-</script> -->

@@ -100,7 +100,19 @@ a:link {
 
 .variantListItem {
 	height: 50px;
-	width: 50px
+	width: 50px;
+	border-radius: 50%;
+	padding: 1px
+}
+
+.variantSelected {
+border: solid;
+border-width: 1px;
+border-color: black;
+}
+
+#variants{
+		list-style: none;
 }
 
 .thumbnail description {

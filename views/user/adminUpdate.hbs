@@ -1,0 +1,67 @@
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<div class= "row">
+    <div class="col-8">
+    <h3> Tu sa robia zmeny existujucich produktov</h3>
+    <p> ak chceš meniť fotky alebo farby variantov, musíš ich najprv </p> <a href="/adminDelete"> vymazať </a>
+{{# if success }}
+    <div class="alert alert-success">
+    <h2> {{this.success}} </h2>
+{{/ if }}
+{{# if error }}
+    <div class="alert alert-error">
+    <h2> {{this.error}} </h2>
+{{/ if }}
+<div class="row">
+  <div class="col-4" >
+
+  </div>
+    <div class="col-8">
+      <br>
+    <h3> co chces zmenit? </h3>
+    <div>
+        <form id="updateForm" action="/adminSearch" method="post">
+          <div class="input-group">
+            <span class="input-group-btn">
+              <button class="btn btn-warning" type="submit" form="updateForm" >Ideš</button>
+            </span>
+            <input type="text" class="form-control" name="search" id="search" placeholder="Mením...">
+            <input style="display: none" name="updateSearch" value="true"/>
+          </div>
+        </form>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-6">
+  {{# each products }}
+        <div class="thumbnail">
+          <img alt="..." class="img-responsive" src= {{ this.imagePath }} style="max-height: 300px; max-width: 300px">
+          <div class="caption">
+            <h3>{{this.title}}</h3>
+            <p class="description">{{this.description}}</p>
+            <p class="cat"> {{this.category}} </p>
+            <p class="subcat"> {{this.subcategory}} </p>
+                <div class="price"> {{this.price}} €</div>
+
+          </div>
+        </div>
+      </div>
+        <div class="col-6">
+        <form action="/adminUpdateView" method="post">
+          <input style="display: none" name="productID" value={{this.id}} />
+          <input style="display: none" name="imagePath" value={{this.imagePath}} />
+          <img alt="..." class="img-responsive" src= {{ this.imagePath }} style="max-height: 300px; max-width: 300px">
+          <textarea name="updateTitle" class="form-control" id="updateTitle" rows="1">{{this.title}}</textarea>
+          <textarea name="updateDescription" class="form-control" id="updateDescription" rows="5">{{this.description}}</textarea>
+          <textarea name="updateCategory" class="form-control" id="updateCategory" rows="1">{{this.category}}</textarea>
+          <textarea name="updateSubcategory" class="form-control" id="updateSubcategory" rows="1">{{this.subcategory}}</textarea>
+          <textarea name="updatePrice" class="form-control" id="updatePrice" rows="1">{{this.price}}</textarea>
+          <button type="submit" class="btn btn-success"> Zameň </button>
+        </form>
+      </div>
+  {{/ each }}
+
+
+
+</div>
+</div>
+</div>

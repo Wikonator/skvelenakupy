@@ -34,8 +34,12 @@ router.get("/", function(req, res, next) {
     res.render("shop/home");
 });
 
-router.get("/search", function(req, res, next) {
-    var products = Product.find({}, null, {sort: {_id: -1}},function (err, docs) {
+router.get("/search/:id", function(req, res, next) {
+    var searchId = req.params.id;
+    console.log(searchId);
+    if (searchId == "Nove") {
+      console.log("going through Nove");
+      var products = Product.find({}, null, {sort: {_id: -1}},function (err, docs) {
       if (err) {
         console.log(err);
       } else {
@@ -47,6 +51,21 @@ router.get("/search", function(req, res, next) {
         res.render('shop/index', { title: 'Deborah Milano', products: productChunks });
         }
     });
+  } else {
+      console.log("going through if search/id");
+      var products = Product.find({"category": searchId}, null, {sort: {_id: -1}},function (err, docs) {
+        if (err) {
+          console.log(err);
+        } else {
+            var productChunks = [];
+            var chunkSize = 3;
+            for (var i=0; i < docs.length; i += chunkSize) {
+                productChunks.push(docs.slice(i, i+ chunkSize));
+            }
+            res.render('shop/index', { title: 'Deborah Milano', products: productChunks });
+          }
+        });
+  }
 });
 
 router.post("/search", function (req, res, next) {
@@ -66,17 +85,20 @@ router.post("/search", function (req, res, next) {
     });
 });
 
-router.get("/add-to-cart/:id", function (req, res, next) {
-    var productId = req.params.id,
+router.post("/add-to-cart", function (req, res, next) {
+  console.log(req.body);
+    var productId = req.body.productID,
+        productColor = req.body.color,
         cart = new Cart(req.session.cart ? req.session.cart : {});
     Product.findById(productId, function (err, product) {
         if (err) {
             return res.redirect("shop/home");
             //THIS NEEDS TO SHOW ERROR AND / or REDIRECT
         }
-        cart.add(product, product.id);
+        cart.add(product, productId, productColor);
         req.session.cart = cart;
-        res.redirect("/");
+        console.log(cart);
+        res.redirect("/kosik");
     });
 });
 
@@ -85,6 +107,7 @@ router.get("/odoberJednu/:id", function (req, res, next) {
         cart = new Cart(req.session.cart ? req.session.cart : {});
         cart.odoberJednu(id);
         req.session.cart = cart;
+        console.log(cart);
         res.redirect("/kosik");
 });
 
@@ -93,6 +116,7 @@ router.get("/odoberVsetky/:id", function (req, res, next) {
         cart = new Cart(req.session.cart ? req.session.cart : {});
         cart.odoberVsetky(id);
         req.session.cart = cart;
+        console.log(cart);
         res.redirect("/kosik");
 });
 
@@ -168,6 +192,7 @@ router.post("/upload", jeAdmin, produUpload, function(req, res, next) {
             description : req.body.popis,
             price : req.body.cena,
             category: req.body.kategoria,
+            subcategory: req.body.podkategoria,
             brand: req.body.znacka,
             color: req.body.farba
         });
@@ -211,12 +236,20 @@ router.post("/adminSearch", jeAdmin, function(req,res,next) {
     var products = Product.find({"$text": {"$search":"'"+ searchString + "'" }}, function (err, docs) {
       if (err) {
         console.log(err);
-      } else if (docs.length == 0){
+      } else if (req.body.updateSearch) {
+        if (docs.length == 0) {
+          res.render('user/adminUpdate', { error:"ništ také tu neni",
+           products: docs });
+        } else {
+          res.render('user/adminUpdate', { success: "našiel som toto",
+        products: docs});
+        }
+      } else if (docs.length == 0) {
         res.render('user/adminDelete', { error:"ništ také tu neni",
          products: docs });
        } else {
          res.render('user/adminDelete', { success: "našiel som toto",
-         products: docs})
+         products: docs});
        }
       })
     }
@@ -279,6 +312,60 @@ router.post("/adminDelete", jeAdmin, function(req,res,next) {
       })
     }
 });
+
+router.get("/adminUpdate/", jeAdmin, function(req, res, next) {
+    res.render("user/adminUpdate")
+});
+
+router.post("/adminUpdate", jeAdmin, function(req,res,next) {
+  var prodID = req.body.productID;
+  Product.update({"_id": prodID}, function (err, response) {
+    if (err) {
+      console.log(err);
+      res.render("user/adminUpdate", { error: "nope, nevymazal som"})
+    } else {
+        fs.unlink(imagePath, function (err) {
+          if (err) {
+            console.log(err);
+            res.render("user/adminUpdate", { error: "neisiel mi vymazat velky obrazok"});
+          } else if (req.body.thumbPath) {
+            fs.unlink(thumbPath, function (e) {
+              if (e) {
+                console.log(e);
+                res.render("user/adminUpdate", { error: "neisiel mi vymazat maly obrazok"});
+              } else {
+                res.render('user/adminUpdate', { success:"vymazal som Produkt"});
+              }
+            })
+          } else {
+            res.render('user/adminUpdate', { success:"vymazal som Produkt"});
+          }
+        });
+      }
+    })
+});
+
+router.post("/adminUpdateView", jeAdmin, function(req,res,next) {
+    var id = req.body.productID,
+        updateObject = {
+          title: req.body.updateTitle,
+          description: req.body.updateDescription,
+          price: req.body.updatePrice,
+          category: req.body.updateCategory,
+          subcategory: req.body.updateSubcategory,
+        };
+        console.log(updateObject);
+        console.log(id);
+    Product.findOneAndUpdate({"_id": id}, updateObject, function(err, result) {
+      if (err) {
+        console.log(err);
+        res.render("user/adminUpdate", {error: "nepodarilo sa..." });
+      } else {
+        console.log("podarilo sa mi updatovat");
+        res.render("user/adminUpdate", {success: "Máme to"});
+      }
+    })
+})
 
 router.get("/kosik", function(req, res, next) {
     if (!req.session.cart) {
@@ -344,8 +431,7 @@ router.get("/email", function (req, res, next) {
 
 
 router.get("/shipping", function (req, res, next) {
-    if (req.isAuthenticated())
-    {
+    if (req.isAuthenticated()) {
         res.render("shop/shipping");
     } else {
         res.render("shop/shipping", {
@@ -428,17 +514,27 @@ router.post("/checkout", function (req, res, next) {
                       } else {
                           var sub = "Potvrdenie objednávky",
                               mejl = shipping.email,
-                              bcc = "topes.jebal@gmail.com",
-                              txt = "Ahoj " + shipping.meno + " tvoja objednávka bola prijatá a čo nevidieť ti ju posielam. Ďakujem že si u nás nakúpila. <3";
+                              bcc = "info@skvelenakupy.sk",
+                              tovarArray = [];
+                              console.log(cart.items);
+                              for (var k in cart.items) {
+                                tovarArray.push(cart.items[k].item.title);
+                                tovarArray.push(cart.items[k].color);
+                                tovarArray.push(cart.items[k].qty + " |");
+                              };
+                          var tovarString = tovarArray.join(" ");
+                          console.log(tovarString);
+                          var txt = "Ahoj " + shipping.meno + " tvoja objednávka" + tovarString + " bola prijatá a čo nevidieť ti ju posielam. Ďakujem že si u nás nakúpila. <3";
                           var mailOptions = {
                               from: "Objednavky@deborahmilano.sk",
                               to: mejl,
-                            //   bcc: bcc,
+                              bcc: bcc,
                               subject: sub,
                               text: txt
                           };
                           nodemailerMailgun.sendMail(mailOptions, function (err, info) {
                                 if (err) {
+                                  console.log("nodemailerMailgun fail");
                                     console.log(err);
                                  } else {
                                    req.session.cart = null;
