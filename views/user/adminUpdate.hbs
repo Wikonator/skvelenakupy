@@ -46,10 +46,13 @@
         </div>
       </div>
         <div class="col-6">
-        <form action="/adminUpdateView" method="post">
+        <form action="/adminUpdateView" method="post" enctype=multipart/form-data>
           <input style="display: none" name="productID" value={{this.id}} />
           <input style="display: none" name="imagePath" value={{this.imagePath}} />
           <img alt="..." class="img-responsive" src= {{ this.imagePath }} style="max-height: 300px; max-width: 300px">
+           <label for="InputFile">Foto</label>
+           <input name="updateFile" type="file" class="form-control-file" id="InputFile" aria-describedby="fileHelp">
+           <small id="fileHelp" class="form-text text-muted">sem daj velku Fotku tovaru.</small>
           <textarea name="updateTitle" class="form-control" id="updateTitle" rows="1">{{this.title}}</textarea>
           <textarea name="updateDescription" class="form-control" id="updateDescription" rows="5">{{this.description}}</textarea>
           <textarea name="updateCategory" class="form-control" id="updateCategory" rows="1">{{this.category}}</textarea>
@@ -62,6 +65,5 @@
 
 
 
-</div>
 </div>
 </div>

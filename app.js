@@ -14,7 +14,7 @@ var express = require("express"),
     flash = require("connect-flash"),
     multer = require("multer"),
     // config file with all API keys
-    config = require("./models/config"),
+    config = require("./models/config");
     storage = multer.diskStorage({
         destination: function (req, file, cb) {
             cb(null, __dirname + '/public/images/produkty');
@@ -23,6 +23,7 @@ var express = require("express"),
             cb(null, file.originalname +".jpg" );
         }
     });
+
     upload = multer({storage: storage});
 
 var routes = require('./routes/index');
@@ -63,6 +64,7 @@ app.use(session({
     cookie: {maxAge: 180 * 60 * 1000}
 }));
 app.use(flash());
+//app.use(multer({dest:'./public/images/produkty'}).single('file'));
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(express.static(path.join(__dirname, 'public')));

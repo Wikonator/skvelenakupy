@@ -198,7 +198,7 @@ router.post("/upload", jeAdmin, produUpload, function(req, res, next) {
         });
     if (req.files) {
         mongoObject.imagePath = "/images/produkty/" + req.files['InputFile'][0].filename;
-        mongoObject.thumbPath = "/images/produkty/" + req.files['thumbFile'][0].filename
+        mongoObject.thumbPath = "/images/produkty/" + req.files['thumbFile'][0].filename;
         mongoObject.save(function(err, result) {
             if (err) {
                 console.log(err);
@@ -345,9 +345,11 @@ router.post("/adminUpdate", jeAdmin, function(req,res,next) {
     })
 });
 
-router.post("/adminUpdateView", jeAdmin, function(req,res,next) {
+router.post("/adminUpdateView", jeAdmin, upload.single("updateFile"), function(req,res,next) {
     var id = req.body.productID,
         updateObject = {
+          imagePath: req.body.imagePath,
+          //thumbPath: "",
           title: req.body.updateTitle,
           description: req.body.updateDescription,
           price: req.body.updatePrice,
@@ -355,17 +357,44 @@ router.post("/adminUpdateView", jeAdmin, function(req,res,next) {
           subcategory: req.body.updateSubcategory,
         };
         console.log(updateObject);
-        console.log(id);
-    Product.findOneAndUpdate({"_id": id}, updateObject, function(err, result) {
-      if (err) {
-        console.log(err);
-        res.render("user/adminUpdate", {error: "nepodarilo sa..." });
+        console.log("now the file");
+        console.log(req.file);
+        if (req.file) {
+          updateObject.imagePath = "/images/produkty/" + req.file.originalname + ".jpg";
+          console.log("at least I have job");
+          console.log(updateObject.imagePath);
+          Product.findOneAndUpdate({"_id": id}, updateObject, function(err, result) {
+            if (err) {
+              console.log(err);
+              res.render("user/adminUpdate", {error: "nepodarilo sa..." });
+            } else {
+              var deleteionPath = "./public" + req.body.imagePath;
+              console.log(deleteionPath);
+              fs.unlink(deleteionPath, function (err) {
+                if (err) {
+                  console.log(err);
+
+                  res.render("user/adminDelete", { error: "neisiel mi vymazat velky obrazok"});
+                } else {
+              console.log("podarilo sa mi updatovat");
+              res.render("user/adminUpdate", {success: "Máme to aj s fotkami"});
+              }
+            });
+          }
+        });
       } else {
-        console.log("podarilo sa mi updatovat");
-        res.render("user/adminUpdate", {success: "Máme to"});
+        console.log("Im in the other else");
+          Product.findOneAndUpdate({"_id": id}, updateObject, function(err, result) {
+            if (err) {
+              console.log(err);
+              res.render("user/adminUpdate", {error: "nepodarilo sa..." });
+            } else {
+              console.log("podarilo sa mi updatovat");
+              res.render("user/adminUpdate", {success: "Máme to bez obrazkov"});
+            }
+          });
       }
-    })
-})
+});
 
 router.get("/kosik", function(req, res, next) {
     if (!req.session.cart) {
