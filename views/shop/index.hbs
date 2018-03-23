@@ -1,27 +1,22 @@
+<section class="mainBody">
 {{# each products }}
 <div class="row">
     {{# each this }}
         <div class="col-sm-6 col-md-4">
       <div class="thumbnail">
           <a href="/itemView/{{this._id}}">
-        <img alt="..." class="img-responsive" src= {{ this.imagePath }} >
+        <img alt="..." class="img-responsive" src= {{ this.imagePath }} width="205" height="205">
         <div class="caption">
-          <h3>{{this.title}}</h3>
-          <p class="description">{{this.description}}</p>
-              <div class="price"> {{this.price}} €</div>
+          <h3 class="thumbTitle">{{this.title}}</h3>
         </div>
     </a>
+      </div>
+      <div class= "hoverThumb">
+        
       </div>
     </div>
     {{/each}}
 
  </div>
 {{/each}}
-<!-- <script>
-    $(".thumbnail").click(
-        {
-
-    }, function(){
-
-    });
-</script> -->
+</section>
