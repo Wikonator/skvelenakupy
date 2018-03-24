@@ -84,11 +84,19 @@ a:link {
 	margin-right: 10px
 }
 
+
 #carouselRow {
 	vertical-align: top;
 	position: absolute;
 	top: -87px;
+	max-width: none;
 }
+
+.carousel img {
+  max-width: none;
+}
+
+
 
 .stack {
 	position: absolute;
